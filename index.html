@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Card Testing</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+      <script>
+
+      $(document).ready(function() {
+        const DECKSIZE = 60;
+
+        const STRIKE = 0;
+        const STRIKENO = 25;
+
+        const CHAINSTRIKE = 1;
+        const CHAINNO = 10;
+
+        const GRANDSTRIKE = 2;
+        const GRANDNO = 5;
+
+        const FAILURE = 3;
+        const FAILNO = 15;
+
+        const GRANDFAILURE = 4;
+        const GRANDFNO = 5;
+
+        var deckArray = [];
+
+        for (var i = 0; i < STRIKENO; i++) {
+          deckArray.push(STRIKE);
+        }
+        for (var i = 0; i < CHAINNO; i++) {
+          deckArray.push(CHAINSTRIKE);
+        }
+        for (var i = 0; i < GRANDNO; i++) {
+          deckArray.push(GRANDSTRIKE);
+        }
+        for (var i = 0; i < FAILNO; i++) {
+          deckArray.push(FAILURE);
+        }
+        for (var i = 0; i < GRANDFNO; i++) {
+          deckArray.push(GRANDFAILURE);
+        }
+
+        function shuffle(array) {
+          var m = array.length, t, i;
+
+          while (m) {
+            i = Math.floor(Math.random() * m--);
+            t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+          }
+
+          return array;
+        }
+
+        shuffle(deckArray);
+        shuffle(deckArray);
+        shuffle(deckArray);
+
+        function displayCard(number) {
+          switch(number) {
+            case 0:
+              return "Strike";
+              break;
+            case 1:
+              return "CHAIN Strike";
+              break;
+            case 2:
+              return "Grand STRIKE";
+              break;
+            case 3:
+              return "Failure";
+              break;
+            case 4:
+              return "Grand FAILURE";
+              break;
+          }
+        }
+
+        function appendCard(number) {
+          switch(number) {
+            case 0:
+              $('#wholeDeck').prepend("Strike<br>");
+              break;
+            case 1:
+              $('#wholeDeck').prepend("Chain Strike<br>");
+              break;
+            case 2:
+                $('#wholeDeck').prepend("Grand Strike<br>");
+              break;
+            case 3:
+                $('#wholeDeck').prepend("Failure<br>");
+              break;
+            case 4:
+                $('#wholeDeck').prepend("Grand Failure<br>");
+              break;
+          }
+        }
+
+        function updateDeck() {
+          $('#wholeDeck').empty();
+          for (var i = 0; i < deckArray.length-1; i++) {
+            appendCard(deckArray[i]);
+          }
+        }
+
+
+        $('#currentCard').text(displayCard(deckArray[deckArray.length-1]));
+
+        $('#cardRemaining').text(deckArray.length-1);
+
+        updateDeck();
+
+        $('#nextCard').click(function(event) {
+          event.preventDefault();
+          if (deckArray.length-1 != 0) {
+            deckArray.pop();
+            $('#currentCard').text(displayCard(deckArray[deckArray.length-1]));
+            $('#cardRemaining').text(deckArray.length-1);
+            updateDeck();
+          } else {
+            $('#currentCard').text("Deck out of cards");
+            $('#cardRemaining').text("0");
+            $('#wholeDeck').empty();
+          }
+        })
+
+        $('#displayDeck').click(function(event) {
+          $('#wholeDeck').toggle();
+        })
+
+      })
+
+      </script>
+  </head>
+  <body>
+    <h3>Cards Remaining</h3>
+    <div id="cardRemaining">
+    </div>
+    <h3>Current Card</h3>
+    <div id="currentCard">
+
+    </div><br>
+    <button id="nextCard">Next Card</button>
+    <hr>
+    <button id="displayDeck">Display Deck</button>
+    <div style="display: none" id="wholeDeck">
+    </div>
+  </body>
+</html>
